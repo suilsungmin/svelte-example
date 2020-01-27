@@ -1,47 +1,38 @@
 <script>
-	export let name;
-	import Nested from './Nested.svelte';
-
-	let numList = []
-	let handleClick = () => {
-		numList = [
-			...numList,
-			numList.length + 1
-		]
-	}
-	$: sum = () => {
-		let a = 0
-		numList.forEach( v => {
-			a += v
-		})
-		return a
+	import Examples from './examples/Examples.svelte';
+	import Todo from './todo/Todo.svelte';
+	let menus = [ 'Examples', 'Todo']
+	let selectedMenu = "Examples"
+	const onClickMenu = (e) => {
+		console.log(e.target.value)
+		selectedMenu = e.target.value
 	}
 </script>
 
 <main>
-	<button on:click = {handleClick}>{sum()}</button>
-	<Nested answer = {sum()}></Nested>
+	<div id ='top-menu'>
+		{#each menus as menu}
+			<button on:click={onClickMenu} value ={menu}>
+				{menu}
+			</button>
+		{/each}
+	</div>
+	{#if selectedMenu == "Examples"}
+		<Examples />
+	{:else}
+		<Todo />
+	
+	{/if}
 </main>
 
 <style>
-
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
+	#top-menu{
+		width : 100%;
+		
+		display: flex;
+		flex : .2;
 	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
+	button  {
+		flex : 1;
 	}
 </style>
